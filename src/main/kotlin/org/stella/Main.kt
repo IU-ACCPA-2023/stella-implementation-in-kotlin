@@ -2,38 +2,46 @@ package org.stella
 
 import org.antlr.v4.runtime.ANTLRErrorListener
 import org.antlr.v4.runtime.atn.ATNConfigSet
-import org.syntax.stella.*
-import org.syntax.stella.Absyn.*
-import org.stella.eval.*
-import org.stella.typecheck.*
+import org.stella.eval.Eval
+import org.stella.typecheck.TypeCheck
+import org.syntax.stella.Absyn.Expr
+import org.syntax.stella.Absyn.Program
+import org.syntax.stella.PrettyPrinter
+import org.syntax.stella.stellaLexer
+import org.syntax.stella.stellaParser
 import java.io.FileReader
 import java.io.IOException
 import java.io.InputStreamReader
 import java.io.Reader
 import java.util.*
+import kotlin.system.exitProcess
 
-fun main(args: Array<String>) {
-    var l: stellaLexer? = null
+fun main(args: Array<String> = emptyArray()) {
+    val l: stellaLexer
     var p: stellaParser
 
     try {
-        val input: Reader = if (args.size == 0) InputStreamReader(System.`in`) else FileReader(args[0])
+        val input: Reader = if (args.isEmpty()) {
+            InputStreamReader(System.`in`)
+        } else  {
+            FileReader(args[0])
+        }
         l = stellaLexer(org.antlr.v4.runtime.ANTLRInputStream(input))
-        l!!.addErrorListener(BNFCErrorListener())
+        l.addErrorListener(BNFCErrorListener())
     } catch (e: IOException) {
         System.err.println("Error: File not found: " + args[0])
-        System.exit(1)
+        exitProcess(1)
     }
     p = stellaParser(org.antlr.v4.runtime.CommonTokenStream(l))
     p.addErrorListener(BNFCErrorListener())
 
-    val t = org.stella.Main(args)
+//    val t = main(args)
     try {
         val ast: Program = p.start_Program().result
-        val typechecker = TypeCheck.TypeCheck
-        val evaluator = Eval.Eval
+        val typechecker = TypeCheck
+        val evaluator = Eval
         typechecker.typecheckProgram(ast)
-        if (args.size > 0) {
+        if (args.isNotEmpty()) {
             val l: stellaLexer = stellaLexer(org.antlr.v4.runtime.ANTLRInputStream(InputStreamReader(System.`in`)))
             l.addErrorListener(BNFCErrorListener())
             val p: stellaParser = stellaParser(org.antlr.v4.runtime.CommonTokenStream(l))
@@ -41,12 +49,12 @@ fun main(args: Array<String>) {
             val ec: stellaParser.Start_ExprContext = p.start_Expr()
             val inputExpr: Expr = ec.result
             val resultExpr: Expr = evaluator.evalMainWith(ast, inputExpr)
-            System.out.println(org.syntax.stella.PrettyPrinter.print(resultExpr))
+            println(PrettyPrinter.print(resultExpr))
         }
     } catch (e: TestError) {
         System.err.println("At line " + e.line + ", column " + e.column + " :")
         System.err.println("     " + e.message)
-        System.exit(1)
+        exitProcess(1)
     }
 }
 
@@ -83,6 +91,7 @@ internal class BNFCErrorListener : ANTLRErrorListener {
         bitSet: BitSet,
         atnConfigSet: ATNConfigSet
     ) {
+        TODO()
     }
 
     override fun reportContextSensitivity(
@@ -93,5 +102,6 @@ internal class BNFCErrorListener : ANTLRErrorListener {
         i2: Int,
         atnConfigSet: ATNConfigSet
     ) {
+        TODO()
     }
 }

@@ -8,12 +8,12 @@ public class Let  extends Expr {
   public int line_num, col_num, offset;
   public Let(String p1, Expr p2, Expr p3) { stellaident_ = p1; expr_1 = p2; expr_2 = p3; }
 
-  public <R,A> R accept(org.syntax.stella.Absyn.Expr.Visitor<R,A> v, A arg) { return v.visit(this, arg); }
+  public <R,A> R accept(Visitor<R,A> v, A arg) { return v.visit(this, arg); }
 
-  public boolean equals(java.lang.Object o) {
+  public boolean equals(Object o) {
     if (this == o) return true;
-    if (o instanceof org.syntax.stella.Absyn.Let) {
-      org.syntax.stella.Absyn.Let x = (org.syntax.stella.Absyn.Let)o;
+    if (o instanceof Let) {
+      Let x = (Let)o;
       return this.stellaident_.equals(x.stellaident_) && this.expr_1.equals(x.expr_1) && this.expr_2.equals(x.expr_2);
     }
     return false;
