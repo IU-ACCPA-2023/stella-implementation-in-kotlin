@@ -1,6 +1,5 @@
 build/
-gradle/
-.gradle
+.gradle/
 
 target/
 !.mvn/wrapper/maven-wrapper.jar
