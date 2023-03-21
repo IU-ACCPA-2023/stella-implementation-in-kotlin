@@ -1,1 +1,1 @@
-rootProject.name = "tella-implementation-in-kotlin"
+rootProject.name = "stella-implementation-in-kotlin"
