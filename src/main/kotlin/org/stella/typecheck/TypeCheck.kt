@@ -1,6 +1,6 @@
-package org.stella.typecheck;
+package org.stella.typecheck
 
-import org.syntax.stella.Absyn.*
+import org.syntax.stella.Absyn.Program
 
 object TypeCheck {
     @Throws(Exception::class)
