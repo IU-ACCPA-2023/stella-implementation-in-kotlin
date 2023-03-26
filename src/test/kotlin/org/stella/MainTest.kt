@@ -1,6 +1,5 @@
 package org.stella
 
-import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
@@ -44,11 +43,15 @@ internal class MainTest {
         val original = System.`in`
         val fips = FileInputStream(File(filepath))
         System.setIn(fips)
-        val exception = assertThrows<Exception> {
+        var typecheckerFailed = false
+        try {
             main()
-            error("expected the typechecker to fail!")
+        } catch (e: java.lang.Exception) {
+            typecheckerFailed = true
         }
-        // TODO: check that there is a type error actually, and not a problem with implementation
+        if (!typecheckerFailed) {
+            throw java.lang.Exception("expected the typechecker to fail!")
+        }        // TODO: check that there is a type error actually, and not a problem with implementation
         System.setIn(original)
     }
 }
