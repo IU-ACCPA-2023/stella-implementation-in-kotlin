@@ -15,6 +15,7 @@ internal class MainTest {
     @ValueSource(strings = [
         "$wellTypedDir/factorial.stella",
         "$wellTypedDir/squares.stella",
+        "$wellTypedDir/higher-order-1.stella",
         "$wellTypedDir/increment_twice.stella",
         "$wellTypedDir/logical-operators.stella"
     ])
@@ -32,6 +33,20 @@ internal class MainTest {
 
     @ParameterizedTest(name = "{index} Typechecking ill-typed program {0}")
     @ValueSource(strings = [
+        "$illTypedDir/applying-non-function-1.stella",
+        "$illTypedDir/applying-non-function-2.stella",
+        "$illTypedDir/applying-non-function-3.stella",
+        "$illTypedDir/argument-type-mismatch-1.stella",
+        "$illTypedDir/argument-type-mismatch-2.stella",
+        "$illTypedDir/argument-type-mismatch-3.stella",
+        "$illTypedDir/bad-if-1.stella",
+        "$illTypedDir/bad-if-2.stella",
+        "$illTypedDir/bad-succ-1.stella",
+        "$illTypedDir/bad-succ-2.stella",
+        "$illTypedDir/bad-succ-3.stella",
+        "$illTypedDir/shadowed-variable-1.stella",
+        "$illTypedDir/undefined-variable-1.stella",
+        "$illTypedDir/undefined-variable-2.stella",
         "$illTypedDir/bad-squares-1.stella",
         "$illTypedDir/bad-squares-2.stella"
     ])
