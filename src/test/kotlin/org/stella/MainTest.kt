@@ -11,6 +11,7 @@ const val wellTypedDir = "$baseDir/well-typed"
 const val illTypedDir = "$baseDir/ill-typed"
 
 internal class MainTest {
+
     @ParameterizedTest(name = "{index} Typechecking well-typed program {0}")
     @ValueSource(strings = [
         "$wellTypedDir/factorial.stella",
@@ -27,7 +28,11 @@ internal class MainTest {
         val original = System.`in`
         val fips = FileInputStream(File(filepath))
         System.setIn(fips)
-        main()
+        try {
+            main()
+        } catch (e: StellaTypeException) {
+            throw java.lang.Exception("expected the typechecker to pass!")
+        }
         System.setIn(original)
     }
 
@@ -61,12 +66,12 @@ internal class MainTest {
         var typecheckerFailed = false
         try {
             main()
-        } catch (e: java.lang.Exception) {
+        } catch (e: StellaTypeException) {
             typecheckerFailed = true
         }
         if (!typecheckerFailed) {
             throw java.lang.Exception("expected the typechecker to fail!")
-        }        // TODO: check that there is a type error actually, and not a problem with implementation
+        }
         System.setIn(original)
     }
 }
